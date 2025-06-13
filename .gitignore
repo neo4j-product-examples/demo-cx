@@ -1,0 +1,4 @@
+cx.env
+.envrc
+.venv/*
+src/.ipynb_checkpoints/*

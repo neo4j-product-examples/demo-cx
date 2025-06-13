@@ -1,0 +1,1147 @@
+{
+  "metadata": {
+    "cypherWorkbenchVersion": "1.8.0",
+    "title": "7-Graphs Customer",
+    "dateCreated": "1749043259278",
+    "dateUpdated": "1749129333605",
+    "description": "Imported using apoc.meta.schema from Marketing Customer: neo4j+s://5daf5b72.databases.neo4j.io:7687 / neo4j (neo4j+s://5daf5b72.databases.neo4j.io:7687)",
+    "notes": "",
+    "isInstanceModel": false,
+    "tags": [],
+    "customers": [],
+    "owners": [
+      {
+        "email": "eric.monk@neo4j.com",
+        "__typename": "User"
+      }
+    ],
+    "viewSettings": {
+      "parentContainerViewSettings": {
+        "rightDrawerOpen": false,
+        "rightDrawerOpenWidth": "800px",
+        "destinationTabIndex": 0,
+        "exportSettings": {}
+      },
+      "canvasViewSettings": {
+        "currentPan": {
+          "x": 93,
+          "y": -104
+        },
+        "currentOffset": {
+          "x": -255.60000000000022,
+          "y": -228.0000000000002
+        },
+        "scaleFactor": 1.4000000000000004
+      }
+    }
+  },
+  "dataModel": {
+    "nodeLabels": {
+      "Node0": {
+        "classType": "NodeLabel",
+        "label": "Customer",
+        "fromDataSources": [],
+        "key": "Node0",
+        "indexes": [],
+        "properties": {
+          "Prop0": {
+            "key": "Prop0",
+            "name": "lastName",
+            "datatype": "String",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          },
+          "Prop2": {
+            "key": "Prop2",
+            "name": "prev_firstName",
+            "datatype": "String",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          },
+          "Prop3": {
+            "key": "Prop3",
+            "name": "segmentId",
+            "datatype": "Integer",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          },
+          "Prop7": {
+            "key": "Prop7",
+            "name": "embedding",
+            "datatype": "String",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          },
+          "Prop5": {
+            "key": "Prop5",
+            "name": "prev_lastName",
+            "datatype": "String",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          },
+          "Prop1": {
+            "key": "Prop1",
+            "name": "customerId",
+            "datatype": "String",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": true,
+            "isArray": false,
+            "isIndexed": true,
+            "mustExist": true,
+            "hasUniqueConstraint": true
+          },
+          "Prop4": {
+            "key": "Prop4",
+            "name": "wccId",
+            "datatype": "Integer",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          },
+          "Prop6": {
+            "key": "Prop6",
+            "name": "firstName",
+            "datatype": "String",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          }
+        },
+        "secondaryNodeLabelKeys": [
+          "Node3"
+        ],
+        "isOnlySecondaryNodeLabel": false,
+        "description": null,
+        "referenceData": "{\"secondaryNodeLabelKeys\":[\"Node3\"],\"isOnlySecondaryNodeLabel\":false}",
+        "display": {
+          "color": "#03a9f4",
+          "stroke": "#0060a3",
+          "strokeWidth": 4,
+          "x": 460,
+          "y": 480,
+          "radius": 40,
+          "size": "md",
+          "width": 80,
+          "height": 80,
+          "fontSize": 14,
+          "fontColor": "white",
+          "textLocation": "middle",
+          "isLocked": false,
+          "glyphs": []
+        }
+      },
+      "Node3": {
+        "classType": "NodeLabel",
+        "label": "ValidCommunity",
+        "fromDataSources": [],
+        "key": "Node3",
+        "indexes": [],
+        "properties": {},
+        "secondaryNodeLabelKeys": [],
+        "isOnlySecondaryNodeLabel": true,
+        "description": null,
+        "referenceData": "{\"secondaryNodeLabelKeys\":[],\"isOnlySecondaryNodeLabel\":true}",
+        "display": {
+          "color": "white",
+          "stroke": "black",
+          "strokeWidth": 4,
+          "x": 200,
+          "y": 100,
+          "radius": 40,
+          "size": "md",
+          "width": 80,
+          "height": 80,
+          "fontSize": 14,
+          "fontColor": "black",
+          "textLocation": "middle",
+          "isLocked": false,
+          "glyphs": []
+        }
+      },
+      "Node1": {
+        "classType": "NodeLabel",
+        "label": "Return",
+        "fromDataSources": [],
+        "key": "Node1",
+        "indexes": [],
+        "properties": {},
+        "secondaryNodeLabelKeys": [],
+        "isOnlySecondaryNodeLabel": true,
+        "description": null,
+        "referenceData": "{\"secondaryNodeLabelKeys\":[],\"isOnlySecondaryNodeLabel\":true}",
+        "display": {
+          "color": "white",
+          "stroke": "black",
+          "strokeWidth": 4,
+          "x": 200,
+          "y": 100,
+          "radius": 40,
+          "size": "md",
+          "width": 80,
+          "height": 80,
+          "fontSize": 14,
+          "fontColor": "black",
+          "textLocation": "middle",
+          "isLocked": false,
+          "glyphs": []
+        }
+      },
+      "Node15": {
+        "classType": "NodeLabel",
+        "label": "Outlier",
+        "fromDataSources": [],
+        "key": "Node15",
+        "indexes": [],
+        "properties": {
+          "Prop19": {
+            "key": "Prop19",
+            "name": "govtId",
+            "datatype": "Integer",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          },
+          "Prop17": {
+            "key": "Prop17",
+            "name": "wccId",
+            "datatype": "Integer",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          },
+          "Prop18": {
+            "key": "Prop18",
+            "name": "emailAddress",
+            "datatype": "String",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          },
+          "Prop16": {
+            "key": "Prop16",
+            "name": "phone",
+            "datatype": "String",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          }
+        },
+        "secondaryNodeLabelKeys": [],
+        "isOnlySecondaryNodeLabel": true,
+        "description": null,
+        "referenceData": "{\"secondaryNodeLabelKeys\":[],\"isOnlySecondaryNodeLabel\":true}",
+        "display": {
+          "color": "white",
+          "stroke": "black",
+          "strokeWidth": 4,
+          "x": 580,
+          "y": 480,
+          "radius": 40,
+          "size": "md",
+          "width": 80,
+          "height": 80,
+          "fontSize": 14,
+          "fontColor": "black",
+          "textLocation": "middle",
+          "isLocked": false,
+          "glyphs": []
+        }
+      },
+      "Node9": {
+        "classType": "NodeLabel",
+        "label": "Product",
+        "fromDataSources": [],
+        "key": "Node9",
+        "indexes": [],
+        "properties": {
+          "Prop11": {
+            "key": "Prop11",
+            "name": "description",
+            "datatype": "String",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          },
+          "Prop10": {
+            "key": "Prop10",
+            "name": "stockCode",
+            "datatype": "String",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": true,
+            "isArray": false,
+            "isIndexed": true,
+            "mustExist": true,
+            "hasUniqueConstraint": true
+          }
+        },
+        "secondaryNodeLabelKeys": [],
+        "isOnlySecondaryNodeLabel": false,
+        "description": null,
+        "referenceData": "{\"secondaryNodeLabelKeys\":[],\"isOnlySecondaryNodeLabel\":false}",
+        "display": {
+          "color": "#4caf50",
+          "stroke": "#006303",
+          "strokeWidth": 4,
+          "x": 620,
+          "y": 780,
+          "radius": 40,
+          "size": "md",
+          "width": 80,
+          "height": 80,
+          "fontSize": 14,
+          "fontColor": "white",
+          "textLocation": "middle",
+          "isLocked": false,
+          "glyphs": []
+        }
+      },
+      "Node7": {
+        "classType": "NodeLabel",
+        "label": "Phone",
+        "fromDataSources": [],
+        "key": "Node7",
+        "indexes": [],
+        "properties": {
+          "Prop9": {
+            "key": "Prop9",
+            "name": "wccId",
+            "datatype": "Integer",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          },
+          "Prop8": {
+            "key": "Prop8",
+            "name": "phone",
+            "datatype": "String",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": true,
+            "isArray": false,
+            "isIndexed": true,
+            "mustExist": true,
+            "hasUniqueConstraint": true
+          }
+        },
+        "secondaryNodeLabelKeys": [
+          "Node15",
+          "Node3"
+        ],
+        "isOnlySecondaryNodeLabel": false,
+        "description": null,
+        "referenceData": "{\"secondaryNodeLabelKeys\":[\"Node15\",\"Node3\"],\"isOnlySecondaryNodeLabel\":false}",
+        "display": {
+          "color": "#00bcd4",
+          "stroke": "#007086",
+          "strokeWidth": 4,
+          "x": 460,
+          "y": 280,
+          "radius": 40,
+          "size": "md",
+          "width": 80,
+          "height": 80,
+          "fontSize": 14,
+          "fontColor": "white",
+          "textLocation": "middle",
+          "isLocked": false,
+          "glyphs": []
+        }
+      },
+      "Node11": {
+        "classType": "NodeLabel",
+        "label": "Order",
+        "fromDataSources": [],
+        "key": "Node11",
+        "indexes": [],
+        "properties": {
+          "Prop14": {
+            "key": "Prop14",
+            "name": "invoiceNo",
+            "datatype": "String",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": true,
+            "isArray": false,
+            "isIndexed": true,
+            "mustExist": true,
+            "hasUniqueConstraint": true
+          },
+          "Prop12": {
+            "key": "Prop12",
+            "name": "invoiceDate",
+            "datatype": "String",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          },
+          "Prop13": {
+            "key": "Prop13",
+            "name": "isCancelled",
+            "datatype": "Boolean",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          }
+        },
+        "secondaryNodeLabelKeys": [
+          "Node1"
+        ],
+        "isOnlySecondaryNodeLabel": false,
+        "description": null,
+        "referenceData": "{\"secondaryNodeLabelKeys\":[\"Node1\"],\"isOnlySecondaryNodeLabel\":false}",
+        "display": {
+          "color": "#ffc107",
+          "stroke": "#a67600",
+          "strokeWidth": 4,
+          "x": 860,
+          "y": 480,
+          "radius": 40,
+          "size": "md",
+          "width": 80,
+          "height": 80,
+          "fontSize": 14,
+          "fontColor": "black",
+          "textLocation": "middle",
+          "isLocked": false,
+          "glyphs": []
+        }
+      },
+      "Node35": {
+        "classType": "NodeLabel",
+        "label": "Identifier",
+        "fromDataSources": [],
+        "key": "Node35",
+        "indexes": [],
+        "properties": {
+          "Prop36": {
+            "key": "Prop36",
+            "name": "wccId",
+            "datatype": "Integer",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          },
+          "Prop37": {
+            "key": "Prop37",
+            "name": "govtId",
+            "datatype": "Integer",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": true,
+            "isArray": false,
+            "isIndexed": true,
+            "mustExist": true,
+            "hasUniqueConstraint": true
+          }
+        },
+        "secondaryNodeLabelKeys": [
+          "Node15",
+          "Node3"
+        ],
+        "isOnlySecondaryNodeLabel": false,
+        "description": null,
+        "referenceData": "{\"secondaryNodeLabelKeys\":[\"Node15\",\"Node3\"],\"isOnlySecondaryNodeLabel\":false}",
+        "display": {
+          "color": "#00bcd4",
+          "stroke": "#007086",
+          "strokeWidth": 4,
+          "x": 220,
+          "y": 340,
+          "radius": 40,
+          "size": "md",
+          "width": 80,
+          "height": 80,
+          "fontSize": 14,
+          "fontColor": "white",
+          "textLocation": "middle",
+          "isLocked": false,
+          "glyphs": []
+        }
+      },
+      "Node33": {
+        "classType": "NodeLabel",
+        "label": "EmailAddress",
+        "fromDataSources": [],
+        "key": "Node33",
+        "indexes": [],
+        "properties": {
+          "Prop35": {
+            "key": "Prop35",
+            "name": "emailAddress",
+            "datatype": "String",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": true,
+            "isArray": false,
+            "isIndexed": true,
+            "mustExist": true,
+            "hasUniqueConstraint": true
+          },
+          "Prop34": {
+            "key": "Prop34",
+            "name": "wccId",
+            "datatype": "Integer",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          }
+        },
+        "secondaryNodeLabelKeys": [
+          "Node15",
+          "Node3"
+        ],
+        "isOnlySecondaryNodeLabel": false,
+        "description": null,
+        "referenceData": "{\"secondaryNodeLabelKeys\":[\"Node15\",\"Node3\"],\"isOnlySecondaryNodeLabel\":false}",
+        "display": {
+          "color": "#00bcd4",
+          "stroke": "#007086",
+          "strokeWidth": 4,
+          "x": 120,
+          "y": 460,
+          "radius": 40,
+          "size": "md",
+          "width": 80,
+          "height": 80,
+          "fontSize": 14,
+          "fontColor": "white",
+          "textLocation": "middle",
+          "isLocked": false,
+          "glyphs": []
+        }
+      },
+      "Node14": {
+        "classType": "NodeLabel",
+        "label": "Country",
+        "fromDataSources": [],
+        "key": "Node14",
+        "indexes": [],
+        "properties": {
+          "Prop15": {
+            "key": "Prop15",
+            "name": "countryName",
+            "datatype": "String",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": true,
+            "isArray": false,
+            "isIndexed": true,
+            "mustExist": true,
+            "hasUniqueConstraint": true
+          }
+        },
+        "secondaryNodeLabelKeys": [],
+        "isOnlySecondaryNodeLabel": false,
+        "description": null,
+        "referenceData": "{\"secondaryNodeLabelKeys\":[],\"isOnlySecondaryNodeLabel\":false}",
+        "display": {
+          "color": "#9c27b0",
+          "stroke": "#4c0064",
+          "strokeWidth": 4,
+          "x": 320,
+          "y": 780,
+          "radius": 40,
+          "size": "md",
+          "width": 80,
+          "height": 80,
+          "fontSize": 14,
+          "fontColor": "white",
+          "textLocation": "middle",
+          "isLocked": false,
+          "glyphs": []
+        }
+      },
+      "Node37": {
+        "classType": "NodeLabel",
+        "label": "OrderLineItem",
+        "fromDataSources": [],
+        "key": "Node37",
+        "indexes": [],
+        "properties": {
+          "Prop40": {
+            "key": "Prop40",
+            "name": "quantity",
+            "datatype": "Integer",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          },
+          "Prop41": {
+            "key": "Prop41",
+            "name": "invoiceLineId",
+            "datatype": "String",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": true,
+            "isArray": false,
+            "isIndexed": true,
+            "mustExist": true,
+            "hasUniqueConstraint": true
+          },
+          "Prop38": {
+            "key": "Prop38",
+            "name": "isCancelled",
+            "datatype": "Boolean",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          },
+          "Prop39": {
+            "key": "Prop39",
+            "name": "unitPrice",
+            "datatype": "Float",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          }
+        },
+        "secondaryNodeLabelKeys": [],
+        "isOnlySecondaryNodeLabel": false,
+        "description": null,
+        "referenceData": "{\"secondaryNodeLabelKeys\":[],\"isOnlySecondaryNodeLabel\":false}",
+        "display": {
+          "color": "#ffc107",
+          "stroke": "#a67600",
+          "strokeWidth": 4,
+          "x": 860,
+          "y": 780,
+          "radius": 40,
+          "size": "md",
+          "width": 80,
+          "height": 80,
+          "fontSize": 14,
+          "fontColor": "black",
+          "textLocation": "middle",
+          "isLocked": false,
+          "glyphs": []
+        }
+      }
+    },
+    "relationshipTypes": {
+      "Rel81": {
+        "classType": "RelationshipType",
+        "key": "Rel81",
+        "type": "LINE_ITEM",
+        "startNodeLabelKey": "Node11",
+        "endNodeLabelKey": "Node37",
+        "properties": {},
+        "referenceData": {},
+        "description": null,
+        "outMinCardinality": "0",
+        "outMaxCardinality": "many",
+        "inMinCardinality": "0",
+        "inMaxCardinality": "many",
+        "display": {
+          "color": "black",
+          "fontSize": 14,
+          "strokeWidth": 3,
+          "offset": 0,
+          "glyph": null
+        }
+      },
+      "Rel82": {
+        "classType": "RelationshipType",
+        "key": "Rel82",
+        "type": "NEXT",
+        "startNodeLabelKey": "Node11",
+        "endNodeLabelKey": "Node11",
+        "properties": {},
+        "referenceData": {},
+        "description": null,
+        "outMinCardinality": "0",
+        "outMaxCardinality": "many",
+        "inMinCardinality": "0",
+        "inMaxCardinality": "many",
+        "display": {
+          "color": "black",
+          "fontSize": 14,
+          "strokeWidth": 3,
+          "offset": 40,
+          "glyph": null
+        }
+      },
+      "Rel70": {
+        "classType": "RelationshipType",
+        "key": "Rel70",
+        "type": "ASSOC_ID",
+        "startNodeLabelKey": "Node0",
+        "endNodeLabelKey": "Node35",
+        "properties": {
+          "Prop71": {
+            "key": "Prop71",
+            "name": "weight",
+            "datatype": "Float",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          }
+        },
+        "referenceData": {},
+        "description": null,
+        "outMinCardinality": "0",
+        "outMaxCardinality": "many",
+        "inMinCardinality": "0",
+        "inMaxCardinality": "many",
+        "display": {
+          "color": "black",
+          "fontSize": 14,
+          "strokeWidth": 3,
+          "offset": 0,
+          "glyph": null
+        }
+      },
+      "Rel76": {
+        "classType": "RelationshipType",
+        "key": "Rel76",
+        "type": "LAST_ORDER",
+        "startNodeLabelKey": "Node0",
+        "endNodeLabelKey": "Node11",
+        "properties": {},
+        "referenceData": {},
+        "description": null,
+        "outMinCardinality": "0",
+        "outMaxCardinality": "many",
+        "inMinCardinality": "0",
+        "inMaxCardinality": "many",
+        "display": {
+          "color": "black",
+          "fontSize": 14,
+          "strokeWidth": 3,
+          "offset": 50,
+          "glyph": null
+        }
+      },
+      "Rel73": {
+        "classType": "RelationshipType",
+        "key": "Rel73",
+        "type": "PURCHASED",
+        "startNodeLabelKey": "Node0",
+        "endNodeLabelKey": "Node9",
+        "properties": {
+          "Prop74": {
+            "key": "Prop74",
+            "name": "totalPurchased",
+            "datatype": "Integer",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          }
+        },
+        "referenceData": {},
+        "description": null,
+        "outMinCardinality": "0",
+        "outMaxCardinality": "many",
+        "inMinCardinality": "0",
+        "inMaxCardinality": "many",
+        "display": {
+          "color": "black",
+          "fontSize": 14,
+          "strokeWidth": 3,
+          "offset": 0,
+          "glyph": null
+        }
+      },
+      "Rel48": {
+        "classType": "RelationshipType",
+        "key": "Rel48",
+        "type": "ASSOC_PHONE",
+        "startNodeLabelKey": "Node0",
+        "endNodeLabelKey": "Node7",
+        "properties": {
+          "Prop48": {
+            "key": "Prop48",
+            "name": "weight",
+            "datatype": "Float",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          }
+        },
+        "referenceData": {},
+        "description": null,
+        "outMinCardinality": "0",
+        "outMaxCardinality": "many",
+        "inMinCardinality": "0",
+        "inMaxCardinality": "many",
+        "display": {
+          "color": "black",
+          "fontSize": 14,
+          "strokeWidth": 3,
+          "offset": 0,
+          "glyph": null
+        }
+      },
+      "Rel45": {
+        "classType": "RelationshipType",
+        "key": "Rel45",
+        "type": "LOCATION",
+        "startNodeLabelKey": "Node0",
+        "endNodeLabelKey": "Node14",
+        "properties": {},
+        "referenceData": {},
+        "description": null,
+        "outMinCardinality": "0",
+        "outMaxCardinality": "many",
+        "inMinCardinality": "0",
+        "inMaxCardinality": "many",
+        "display": {
+          "color": "black",
+          "fontSize": 14,
+          "strokeWidth": 3,
+          "offset": 0,
+          "glyph": null
+        }
+      },
+      "Rel46": {
+        "classType": "RelationshipType",
+        "key": "Rel46",
+        "type": "FIRST_ORDER",
+        "startNodeLabelKey": "Node0",
+        "endNodeLabelKey": "Node11",
+        "properties": {},
+        "referenceData": {},
+        "description": null,
+        "outMinCardinality": "0",
+        "outMaxCardinality": "many",
+        "inMinCardinality": "0",
+        "inMaxCardinality": "many",
+        "display": {
+          "color": "black",
+          "fontSize": 14,
+          "strokeWidth": 3,
+          "offset": 25,
+          "glyph": null
+        }
+      },
+      "Rel51": {
+        "classType": "RelationshipType",
+        "key": "Rel51",
+        "type": "SHARED_PII",
+        "startNodeLabelKey": "Node0",
+        "endNodeLabelKey": "Node0",
+        "properties": {
+          "Prop54": {
+            "key": "Prop54",
+            "name": "nameScore",
+            "datatype": "Float",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          },
+          "Prop51": {
+            "key": "Prop51",
+            "name": "featureScore",
+            "datatype": "Float",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          },
+          "Prop52": {
+            "key": "Prop52",
+            "name": "firstNameScore",
+            "datatype": "Float",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          },
+          "Prop53": {
+            "key": "Prop53",
+            "name": "lastNameScore",
+            "datatype": "Float",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          },
+          "Prop55": {
+            "key": "Prop55",
+            "name": "combinedScore",
+            "datatype": "Float",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          }
+        },
+        "referenceData": {},
+        "description": null,
+        "outMinCardinality": "0",
+        "outMaxCardinality": "many",
+        "inMinCardinality": "0",
+        "inMaxCardinality": "many",
+        "display": {
+          "color": "black",
+          "fontSize": 14,
+          "strokeWidth": 3,
+          "offset": 80,
+          "glyph": null
+        }
+      },
+      "Rel137": {
+        "classType": "RelationshipType",
+        "key": "Rel137",
+        "type": "PRODUCT",
+        "startNodeLabelKey": "Node37",
+        "endNodeLabelKey": "Node9",
+        "properties": {},
+        "referenceData": {},
+        "description": null,
+        "outMinCardinality": "0",
+        "outMaxCardinality": "many",
+        "inMinCardinality": "0",
+        "inMaxCardinality": "many",
+        "display": {
+          "color": "black",
+          "fontSize": 14,
+          "strokeWidth": 3,
+          "offset": 0,
+          "glyph": null
+        }
+      },
+      "Rel74": {
+        "classType": "RelationshipType",
+        "key": "Rel74",
+        "type": "ORDERED",
+        "startNodeLabelKey": "Node0",
+        "endNodeLabelKey": "Node11",
+        "properties": {},
+        "referenceData": {},
+        "description": null,
+        "outMinCardinality": "0",
+        "outMaxCardinality": "many",
+        "inMinCardinality": "0",
+        "inMaxCardinality": "many",
+        "display": {
+          "color": "black",
+          "fontSize": 14,
+          "strokeWidth": 3,
+          "offset": -25,
+          "glyph": null
+        }
+      },
+      "Rel78": {
+        "classType": "RelationshipType",
+        "key": "Rel78",
+        "type": "ASSOC_EMAIL",
+        "startNodeLabelKey": "Node0",
+        "endNodeLabelKey": "Node33",
+        "properties": {
+          "Prop78": {
+            "key": "Prop78",
+            "name": "weight",
+            "datatype": "Float",
+            "referenceData": "",
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          }
+        },
+        "referenceData": {},
+        "description": null,
+        "outMinCardinality": "0",
+        "outMaxCardinality": "many",
+        "inMinCardinality": "0",
+        "inMaxCardinality": "many",
+        "display": {
+          "color": "black",
+          "fontSize": 14,
+          "strokeWidth": 3,
+          "offset": 0,
+          "glyph": null
+        }
+      },
+      "Rel41": {
+        "classType": "RelationshipType",
+        "key": "Rel41",
+        "type": "SIMILAR_PURCHASE_TO",
+        "startNodeLabelKey": "Node0",
+        "endNodeLabelKey": "Node0",
+        "properties": {
+          "Prop42": {
+            "key": "Prop42",
+            "name": "score",
+            "datatype": "Float",
+            "referenceData": null,
+            "description": null,
+            "fromDataSources": [],
+            "isPartOfKey": false,
+            "isArray": false,
+            "isIndexed": false,
+            "mustExist": false,
+            "hasUniqueConstraint": false
+          }
+        },
+        "referenceData": {},
+        "description": null,
+        "outMinCardinality": "0",
+        "outMaxCardinality": "many",
+        "inMinCardinality": "0",
+        "inMaxCardinality": "many",
+        "display": {
+          "color": "black",
+          "fontSize": 14,
+          "strokeWidth": 3,
+          "offset": 40,
+          "glyph": null
+        }
+      }
+    }
+  }
+}
