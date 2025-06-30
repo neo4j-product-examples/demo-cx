@@ -2,3 +2,4 @@ cx.env
 .envrc
 .venv/*
 src/.ipynb_checkpoints/*
+uv.lock
