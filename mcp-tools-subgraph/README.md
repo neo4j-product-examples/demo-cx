@@ -1,7 +1,7 @@
 # Customer Graph with MCP
 In this subdirectory we create a graph from a sample of the main [customer experience demo](https://neo4j.com/developer/demos/cx-demo/) and configure some MCP servers to allow agents to access and reason over the data. It focuses on a subset of the data model that describes customer product ordering behavior.
 
-Data is loaded from an `orders.csv` file, after which graph analytics algorithms are used to create customer segments based on purchasing behavior. These segments are then labeled with titles and descriptions based on purchase patterns using an LLM workflow. We then configure MCP servers via both MCP Toolbox (for a specialized query template for calculating churn risks) and [mcp-neo4j-cypher](https://github.com/neo4j-contrib/mcp-neo4j/tree/main/servers/mcp-neo4j-cypher) that allow agents to write and execute their own Cypher queries based on the graph schema and user input.
+Data is loaded from an `orders.csv` file, after which graph analytics algorithms are used to create customer segments based on purchasing behavior. These segments are then labeled with titles and descriptions based on purchase patterns using an LLM workflow. We then configure MCP servers via both [MCP Toolbox](https://neo4j.com/blog/developer/ai-agents-gen-ai-toolbox/) (for a specialized query template for calculating churn risks) and [mcp-neo4j-cypher](https://github.com/neo4j-contrib/mcp-neo4j/tree/main/servers/mcp-neo4j-cypher) that allow agents to write and execute their own Cypher queries based on the graph schema and user input.
 
 **Note that you will need an OpenAI API key to run this example**
 
