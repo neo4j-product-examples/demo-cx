@@ -3,3 +3,7 @@ cx.env
 .venv/*
 src/.ipynb_checkpoints/*
 uv.lock
+scratch/
+.idea/
+.ipynb_checkpoints/
+toolbox
