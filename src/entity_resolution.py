@@ -9,9 +9,9 @@ with app.setup:
 
 @app.cell
 def _():
+    # Test to make sure database is accessible and working 
 
-    _query = 'MATCH p=()-[]-() limit 10 RETURN p'
-    visualize_query(_query)
+    visualize_query('MATCH p=()-[]-() limit 10 RETURN p')
 
     return
 
@@ -41,8 +41,7 @@ def _(mo):
 
 @app.cell
 def _():
-    _query = 'call db.schema.visualization()'
-    visualize_query(_query)
+    visualize_query('call db.schema.visualization()')
     return
 
 
@@ -60,22 +59,34 @@ def _(mo):
 
 @app.cell
 def _():
-    _query = '\nMATCH (:Customer)-[r:SHARED_PII]->()\nDELETE r\n'
-    results = run_query(_query)
-    _query = '\nMATCH (n:ValidCommunity)\nREMOVE n:ValidCommunity\n'
-    results = run_query(_query)
-    _query = '\nMATCH (n:Outlier)\nREMOVE n:Outlier\n'
-    results = run_query(_query)
-    _query = '\nMATCH (c:Customer)\nREMOVE c.wccId\n'
-    results = run_query(_query)
-    _query = "\nCALL gds.graph.drop('similarity-projection');\n"
+
+    results = run_query('''
+    MATCH (:Customer)-[r:SHARED_PII]->()
+    DELETE r
+    ''')
+
+    results = run_query('''
+    MATCH (n:ValidCommunity)
+    REMOVE n:ValidCommunity
+    ''')
+
+    results = run_query('''
+    MATCH (n:Outlier)
+    REMOVE n:Outlier
+    ''')
+
+    results = run_query('''
+    MATCH (c:Customer)
+    REMOVE c.wccId
+    ''')
+
     try:
-        results = run_query(_query)
+        results = run_query("CALL gds.graph.drop('similarity-projection');")
     except Exception:
         print('Ignoring error - projection does not exist')
-    _query = "\nCALL gds.graph.drop('wcc-projection');\n"
+    
     try:
-        results = run_query(_query)
+        results = run_query("CALL gds.graph.drop('wcc-projection');")
     except Exception:
         print('Ignoring error - projection does not exist')
     return
@@ -121,10 +132,27 @@ def _(mo):
 
 @app.cell
 def _():
-    _query = '\nWITH {\n    featureParams: [\n        { label: "Phone", rel: "ASSOC_PHONE", prop: "phone" },\n        { label: "EmailAddress", rel: "ASSOC_EMAIL", prop: "emailAddress" },\n        { label: "Identifier", rel: "ASSOC_ID", prop: "govtId" }\n    ],\n    degreeCutoff: 10\n} as params\nUNWIND params.featureParams as feature\nCALL (params, feature) {\n    MATCH (n:$(feature.label))\n    WITH params, n, count { ()-[:$(feature.rel)]->(n) } as countVal\n    ORDER BY countVal DESC\n    WHERE countVal >= params.degreeCutoff\n    RETURN n\n}\nSET n:Outlier;\n'
-    run_query(_query)
-    _query = '\nmatch (o:Outlier)-[r]-(c) return *\n'
-    visualize_query(_query)
+    run_query('''
+    WITH {
+    featureParams: [
+        { label: "Phone", rel: "ASSOC_PHONE", prop: "phone" },
+        { label: "EmailAddress", rel: "ASSOC_EMAIL", prop: "emailAddress" },
+        { label: "Identifier", rel: "ASSOC_ID", prop: "govtId" }
+        ],
+        degreeCutoff: 10
+        } as params
+    UNWIND params.featureParams as feature
+    CALL (params, feature) {
+        MATCH (n:$(feature.label))
+        WITH params, n, count { ()-[:$(feature.rel)]->(n) } as countVal
+        ORDER BY countVal DESC
+        WHERE countVal >= params.degreeCutoff
+        RETURN n
+    }
+    SET n:Outlier;
+    ''')
+
+    visualize_query('match (o:Outlier)-[r]-(c) return *')
 
     return
 
@@ -147,14 +175,35 @@ def _(mo):
 
 @app.cell
 def _():
-    _query = "\nCALL gds.graph.project('wcc-projection', \n    ['Customer', 'Identifier','Phone','EmailAddress'], \n    ['ASSOC_EMAIL', 'ASSOC_PHONE','ASSOC_ID'] \n);\n"
-    run_query(_query)
-    _query = "\nCALL gds.wcc.write('wcc-projection', { writeProperty: 'wccId' })\nYIELD nodePropertiesWritten, componentCount;\n"
-    run_query(_query)
-    _query = '\nMATCH (c:Customer|Phone|EmailAddress|Identifier) \nWHERE c.wccId IS NOT NULL\nWITH c, c.wccId as wccId, CASE WHEN c:Customer THEN 1 ELSE 0 END as customerFlag\nWITH wccId, sum(customerFlag) as numberOfCustomers, collect(c) as communityNodes\nWHERE numberOfCustomers > 1\nWITH communityNodes\nUNWIND communityNodes as communityNode\nSET communityNode:ValidCommunity\n'
-    run_query(_query)
-    _query = '\nMATCH p=(c:Customer&ValidCommunity)-->(:(Phone|EmailAddress|Identifier)&!Outlier)<--(c2)\nRETURN p\nLIMIT 500;\n'
-    visualize_query(_query)
+
+    run_query("""
+    CALL gds.graph.project('wcc-projection', 
+        ['Customer', 'Identifier', 'Phone', 'EmailAddress'], 
+        ['ASSOC_EMAIL', 'ASSOC_PHONE', 'ASSOC_ID'] 
+        );
+    """)
+
+    run_query("""
+    CALL gds.wcc.write('wcc-projection', { writeProperty: 'wccId' })
+    YIELD nodePropertiesWritten, componentCount;
+    """)
+
+    run_query('''
+    MATCH (c:Customer|Phone|EmailAddress|Identifier) 
+    WHERE c.wccId IS NOT NULL
+    WITH c, c.wccId as wccId, CASE WHEN c:Customer THEN 1 ELSE 0 END as customerFlag
+    WITH wccId, sum(customerFlag) as numberOfCustomers, collect(c) as communityNodes
+        WHERE numberOfCustomers > 1
+    WITH communityNodes
+    UNWIND communityNodes as communityNode
+    SET communityNode:ValidCommunity
+    ''')
+
+    visualize_query('''
+    MATCH p=(c:Customer&ValidCommunity)-->(:(Phone|EmailAddress|Identifier)&!Outlier)<--(c2)
+    RETURN p
+    LIMIT 500;
+    ''')
 
     return
 
@@ -173,12 +222,20 @@ def _(mo):
 
 @app.cell
 def _():
-    _query = '\nMATCH ()-[r:ASSOC_ID]->()\nSET r.weight = 1.0;\n'
-    run_query(_query)
-    _query = '\nMATCH ()-[r:ASSOC_PHONE]->()\nSET r.weight = 0.5;\n'
-    run_query(_query)
-    _query = '\nMATCH ()-[r:ASSOC_EMAIL]->()\nSET r.weight = 0.5;\n'
-    run_query(_query)
+    run_query('''
+    MATCH ()-[r:ASSOC_ID]->()
+    SET r.weight = 1.0;
+    ''')
+
+    run_query('''
+    MATCH ()-[r:ASSOC_PHONE]->()
+    SET r.weight = 0.5;
+    ''')
+
+    run_query('''
+    MATCH ()-[r:ASSOC_EMAIL]->()
+    SET r.weight = 0.5;
+    ''')
     return
 
 
@@ -198,10 +255,29 @@ def _(mo):
 
 @app.cell
 def _():
-    _query = "\nCALL gds.graph.project('similarity-projection', \n    { \n        ValidCommunity: {properties: 'wccId'} \n    },\n    {\n        ASSOC_ID: { properties: 'weight' },\n        ASSOC_PHONE: { properties: 'weight' },\n        ASSOC_EMAIL: { properties: 'weight' }\n    }\n);\n"
-    run_query(_query)
-    _query = "\nCALL gds.nodeSimilarity.write('similarity-projection', {\n    writeRelationshipType: 'SHARED_PII',\n    relationshipWeightProperty: 'weight',\n    similarityMetric: 'COSINE',\n    useComponents: 'wccId',\n    writeProperty: 'featureScore'\n});\n"
-    run_query(_query)
+    run_query("""
+    CALL gds.graph.project('similarity-projection', 
+        { 
+            ValidCommunity: {properties: 'wccId'} 
+        },
+        {
+            ASSOC_ID: { properties: 'weight' },
+            ASSOC_PHONE: { properties: 'weight' },
+            ASSOC_EMAIL: { properties: 'weight' }
+        }
+    );
+    """)
+
+    run_query("""
+    CALL gds.nodeSimilarity.write('similarity-projection',
+        {
+            writeRelationshipType: 'SHARED_PII',
+            relationshipWeightProperty: 'weight',
+            similarityMetric: 'COSINE',
+            useComponents: 'wccId',
+            writeProperty: 'featureScore'
+        });
+    """)
     return
 
 
@@ -219,16 +295,19 @@ def _(mo):
 
 @app.cell
 def _():
-    _query = '\nMATCH p=()-[r:SHARED_PII]->() RETURN p LIMIT 100;\n'
-    visualize_query(_query)
+    visualize_query('MATCH p=()-[r:SHARED_PII]->() RETURN p LIMIT 100;')
 
     return
 
 
 @app.cell
 def _():
-    _query = '\nMATCH p=(c:Customer)-[r:SHARED_PII WHERE r.featureScore > 0.8]->(c2)\nWITH c, collect(p) as paths\nWHERE size(paths) <= 5\nRETURN paths\nLIMIT 50;\n'
-    visualize_query(_query)
+    visualize_query('''
+    MATCH p=(c:Customer)-[r:SHARED_PII WHERE r.featureScore > 0.8]->(c2)
+    WITH c, collect(p) as paths
+    WHERE size(paths) <= 5
+    RETURN paths\nLIMIT 50;
+    ''')
 
     return
 
@@ -249,10 +328,22 @@ def _(mo):
 
 @app.cell
 def _():
-    _query = '\nMATCH (c:Customer)-[r:SHARED_PII]->(c2)\nWITH r, apoc.text.sorensenDiceSimilarity(c.firstName, c2.firstName) as firstNameScore,\n    apoc.text.sorensenDiceSimilarity(c.lastName, c2.lastName) as lastNameScore\nWITH r, firstNameScore, lastNameScore, (1.0 * firstNameScore + lastNameScore) / 2 as nameScore\nSET r += {\n    firstNameScore: firstNameScore,\n    lastNameScore: lastNameScore,\n    nameScore: nameScore\n};\n'
-    run_query(_query)
-    _query = '\nMATCH ()-[r:SHARED_PII]->()\nSET r.combinedScore = (r.featureScore + r.nameScore) / 2;\n'
-    run_query(_query)
+    run_query('''
+    MATCH (c:Customer)-[r:SHARED_PII]->(c2)
+    WITH r, apoc.text.sorensenDiceSimilarity(c.firstName, c2.firstName) as firstNameScore,
+        apoc.text.sorensenDiceSimilarity(c.lastName, c2.lastName) as lastNameScore
+    WITH r, firstNameScore, lastNameScore, (1.0 * firstNameScore + lastNameScore) / 2 as nameScore
+    SET r += {
+        firstNameScore: firstNameScore,
+        lastNameScore: lastNameScore,
+        nameScore: nameScore
+        };
+    ''')
+
+    run_query('''
+    MATCH ()-[r:SHARED_PII]->()
+    SET r.combinedScore = (r.featureScore + r.nameScore) / 2;
+    ''')
     return
 
 
@@ -272,8 +363,12 @@ def _(mo):
 
 @app.cell
 def _():
-    _query = '\nMATCH p=(c:Customer&!ValidCommunity)\nMATCH p2=ALL SHORTEST (c)-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]->(:!Outlier)\nRETURN *\nLIMIT 100;\n'
-    visualize_query(_query)
+    visualize_query('''
+    MATCH p=(c:Customer&!ValidCommunity)
+    MATCH p2=ALL SHORTEST (c)-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]->(:!Outlier)
+    RETURN *
+    LIMIT 100;
+    ''')
 
     return
 
@@ -292,8 +387,11 @@ def _(mo):
 
 @app.cell
 def _():
-    _query = '\nMATCH p=(c:Customer)-[r:SHARED_PII WHERE r.combinedScore > 0.8]->(c2)\nMATCH p2=ALL SHORTEST (c)-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]->(:!Outlier)<-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]-(c2)\nRETURN *;\n'
-    visualize_query(_query)
+    visualize_query('''
+    MATCH p=(c:Customer)-[r:SHARED_PII WHERE r.combinedScore > 0.8]->(c2)
+    MATCH p2=ALL SHORTEST (c)-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]->(:!Outlier)<-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]-(c2)
+    RETURN *;
+    ''')
 
     return
 
@@ -312,24 +410,41 @@ def _(mo):
 
 @app.cell
 def _():
-    _query = '\nMATCH p=(c:Customer)-[r:SHARED_PII WHERE r.combinedScore <= 0.8]->(c2)\nWITH c.wccId as wccId, count(r) as numRels, sum(r.lastNameScore) as lastNameTotal, collect({p:p,c:c,c2:c2}) as resultList\nWHERE (lastNameTotal / numRels) >= 0.8\nWITH *\nUNWIND resultList as result\nWITH result.p as p, result.c as c, result.c2 as c2\nMATCH p2=ALL SHORTEST (c)-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]->(:!Outlier)<-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]-(c2)\nRETURN *;\n'
-    visualize_query(_query)
+    visualize_query('''
+    MATCH p=(c:Customer)-[r:SHARED_PII WHERE r.combinedScore <= 0.8]->(c2)
+    WITH c.wccId as wccId, count(r) as numRels, 
+        sum(r.lastNameScore) as lastNameTotal, 
+        collect({p:p,c:c,c2:c2}) as resultList
+    WHERE (lastNameTotal / numRels) >= 0.8
+    WITH *
+    UNWIND resultList as result
+    WITH result.p as p, result.c as c, result.c2 as c2
+    MATCH p2=ALL SHORTEST (c)-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]->(:!Outlier)<-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]-(c2)
+    RETURN *;
+    ''')
 
     return
 
 
 @app.cell
 def _():
-    _query = '\nMATCH p=(c:Customer)-[r:SHARED_PII]->(c2)\nMATCH p2=ALL SHORTEST (c)-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]->(:!Outlier)<-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]-(c2)\nRETURN *\nLIMIT 500;\n'
-    visualize_query(_query)
+    visualize_query('''
+    MATCH p=(c:Customer)-[r:SHARED_PII]->(c2)
+    MATCH p2=ALL SHORTEST (c)-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]->(:!Outlier)<-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]-(c2)
+    RETURN *
+    LIMIT 500;
+    ''')
 
     return
 
 
 @app.cell
 def _():
-    _query = '\nMATCH (o:Outlier)<-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]-(c:Customer)\nMATCH p2=ALL SHORTEST (c)-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]->()\nRETURN *;\n'
-    visualize_query(_query)
+    visualize_query('''
+    MATCH (o:Outlier)<-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]-(c:Customer)
+    MATCH p2=ALL SHORTEST (c)-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]->()
+    RETURN *;
+    ''')
 
     return
 
