@@ -4,10 +4,7 @@ __generated_with = "0.14.16"
 app = marimo.App(width="full")
 
 with app.setup:
-    # Initialization code that runs before all other cells
-
-    # from util import run_query
-    from util import visualize_query, run_query
+    from util import run_query, visualize_query
 
 
 @app.cell

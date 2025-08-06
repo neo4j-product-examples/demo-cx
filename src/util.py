@@ -12,8 +12,8 @@ with app.setup:
     import os
     import marimo
 
-
-    load_dotenv('cx.env', override=True)
+    _path = "cx.env"
+    load_dotenv(_path, override=True)
     NEO4J_URI = os.getenv('NEO4J_URI')
     NEO4J_USERNAME = os.getenv('NEO4J_USERNAME')
     NEO4J_PASSWORD = os.getenv('NEO4J_PASSWORD')
