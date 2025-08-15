@@ -9,3 +9,5 @@ dependencies = [
     "neo4j-viz>=0.4.0",
     "python-dotenv>=1.1.1",
 ]
+
+[tool.marimo]
