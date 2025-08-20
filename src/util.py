@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.14.16"
+__generated_with = "0.14.17"
 app = marimo.App(width="medium")
 
 with app.setup:
@@ -38,6 +38,13 @@ def visualize_query(_query, parameters=None):
         VG = from_neo4j(result)
         VG.color_nodes(field="caption")
         return marimo.iframe(VG.render().data)
+
+
+@app.function
+def run_query_df(_query, parameters=None):
+    with driver.session() as session:
+        result = session.run(_query, parameters)
+        return result.to_df()
 
 
 if __name__ == "__main__":

@@ -1,10 +1,10 @@
 import marimo
 
-__generated_with = "0.14.16"
+__generated_with = "0.14.17"
 app = marimo.App(width="full")
 
 with app.setup:
-    from util import run_query, visualize_query
+    from util import run_query, visualize_query, run_query_df
 
 
 @app.cell
@@ -84,11 +84,13 @@ def _():
         results = run_query("CALL gds.graph.drop('similarity-projection');")
     except Exception:
         print('Ignoring error - projection does not exist')
-    
+
     try:
         results = run_query("CALL gds.graph.drop('wcc-projection');")
     except Exception:
         print('Ignoring error - projection does not exist')
+
+    cleanup = True
     return
 
 
@@ -402,7 +404,7 @@ def _(mo):
         r"""
     ## Use last name similarities to identify potential households
     ---
-    Often times we want to know which of our customers live in the same household; that helps us understand each customer better. For example, if one of
+    Oftentimes we want to know which of our customers live in the same household; that helps us understand each customer better. For example, if one of the members of a household buys cat food, we can infer that other household members are also cat owners
     """
     )
     return
