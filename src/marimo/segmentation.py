@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.14.16"
+__generated_with = "0.19.7"
 app = marimo.App()
 
 with app.setup:
@@ -18,8 +18,7 @@ def _():
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Understanding the Data Model
     ---
     This **graph model** maps information about customers and their orders including key entities such as:
@@ -30,12 +29,17 @@ def _(mo):
     - Customers' identifying information including **Email**, **Phone**, and **Country**
 
     It models key relationships like:
-    - `PURCHASED` – which products a customer has purchased  
-    - `ASSOC_ID, ASSOC_EMAIL, ASSOC_PHONE` – PII associated with a customer 
+    - `PURCHASED` – which products a customer has purchased
+    - `ASSOC_ID, ASSOC_EMAIL, ASSOC_PHONE` – PII associated with a customer
     - `NEXT` – relationship that captures the sequence of orders for a customer
-    """
-    )
+    """)
     return
+
+
+@app.cell
+def _():
+    import marimo as mo
+    return (mo,)
 
 
 @app.cell
@@ -47,7 +51,9 @@ def _():
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""## Clean up any prior runs""")
+    mo.md(r"""
+    ## Clean up any prior runs
+    """)
     return
 
 
@@ -79,13 +85,11 @@ def _():
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Data preparation
     ---
     Compute the total number of each product ordered and save in a **totalPurchased** property
-    """
-    )
+    """)
     return
 
 
@@ -98,13 +102,11 @@ def _():
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Compute Graph embeddings using Fast Random Projection
     ---
     Fast Random Projection (FastRP) is a node embedding algorithm for each node in which the embedding vector will be similar for two nodes that have similar neighborhoods. This cell creates the projection based on tho PURCHASED relationship between **Customers** and **Products** and considers how many of each product the customer purchased. The results of the FastRP algorithm will be written back to the graph as a property named **embedding** on the **Customer** nodes
-    """
-    )
+    """)
     return
 
 
@@ -121,13 +123,11 @@ def _():
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Use K-Nearest-Neighbors to create SIMILAR_PURCHASE_TO relationships
     ---
     K-Nearest-Neighbors (KNN) is an algorithm that finds the closest K number of embeddings. We will use the purchase similarity embeddings for this and use the KNN results to write a SIMILAR_PURCHASE_TO relationship between the closest K customers
-    """
-    )
+    """)
     return
 
 
@@ -142,13 +142,11 @@ def _():
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Community Detection for segmentation / product recommendations
     ---
     Leiden is an algorithm for detecting communities. We will use it to segment our customers besad on their knn similarity scores and purchase similarities. We will write a **segmentId** property to the **Customer** nodes
-    """
-    )
+    """)
     return
 
 
@@ -163,13 +161,11 @@ def _():
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Show communities and their sizes
     ---
     Now that we have segmented our Customers, we can show the segments (identified with an id) and their sizes (how many customers)
-    """
-    )
+    """)
     return
 
 
@@ -182,13 +178,11 @@ def _():
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Visualize a community and some of its common purchases
     ---
     Now that we have segmented our Customers, we can show the segments (identified with an id) and their sizes (how many customers)
-    """
-    )
+    """)
     return
 
 
