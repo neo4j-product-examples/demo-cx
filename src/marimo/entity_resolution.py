@@ -1,17 +1,20 @@
 import marimo
 
-__generated_with = "0.18.0"
+__generated_with = "0.19.9"
 app = marimo.App(width="full")
 
 with app.setup:
-    from util import run_query, visualize_query, run_query_df
+    from util import run_query, visualize_query, run_query_df, get_result_graph, project_graph, visualize_projection, wcc, drop_graph
+
+    from NvlWidget import NvlWidget
 
 
 @app.cell
 def _():
-    # Test to make sure database is accessible and working 
+    _result = get_result_graph('MATCH p=()-[]-() limit 10 RETURN p')
+    _widget = NvlWidget.from_result(_result)
 
-    visualize_query('MATCH p=()-[]-() limit 10 RETURN p')
+    _widget
     return
 
 
@@ -38,7 +41,10 @@ def _(mo):
 
 @app.cell
 def _():
-    visualize_query('call db.schema.visualization()')
+    _result = get_result_graph('call db.schema.visualization()')
+    _widget = NvlWidget.from_result(_result)
+
+    _widget
     return
 
 
@@ -74,16 +80,6 @@ def _():
     MATCH (c:Customer)
     REMOVE c.wccId
     ''')
-
-    try:
-        results = run_query("CALL gds.graph.drop('similarity-projection');")
-    except Exception:
-        print('Ignoring error - projection does not exist')
-
-    try:
-        results = run_query("CALL gds.graph.drop('wcc-projection');")
-    except Exception:
-        print('Ignoring error - projection does not exist')
 
     cleanup = True
     return
@@ -145,7 +141,10 @@ def _():
     SET n:Outlier;
     ''')
 
-    visualize_query('match (o:Outlier)-[r]-(c) return *')
+    _result = get_result_graph('match (o:Outlier)-[r]-(c) return *')
+    _widget = NvlWidget.from_result(_result)
+
+    _widget
     return
 
 
@@ -165,21 +164,17 @@ def _(mo):
 
 @app.cell
 def _():
+    drop_graph('wcc_projection')
 
-    run_query("""
-    CALL gds.graph.project('wcc-projection', 
-        ['Customer', 'Identifier', 'Phone', 'EmailAddress'], 
-        ['ASSOC_EMAIL', 'ASSOC_PHONE', 'ASSOC_ID'] 
-        );
-    """)
+    _g = project_graph('wcc_projection',
+                      ['Customer', 'Identifier', 'Phone', 'EmailAddress'],
+                       ['ASSOC_EMAIL', 'ASSOC_PHONE', 'ASSOC_ID'])
 
-    run_query("""
-    CALL gds.wcc.write('wcc-projection', { writeProperty: 'wccId' })
-    YIELD nodePropertiesWritten, componentCount;
-    """)
+
+    wcc(_g, 'wccId')
 
     run_query('''
-    MATCH (c:Customer|Phone|EmailAddress|Identifier) 
+    MATCH (c:Customer|Phone|EmailAddress|Identifier)
     WHERE c.wccId IS NOT NULL
     WITH c, c.wccId as wccId, CASE WHEN c:Customer THEN 1 ELSE 0 END as customerFlag
     WITH wccId, sum(customerFlag) as numberOfCustomers, collect(c) as communityNodes
@@ -189,11 +184,14 @@ def _():
     SET communityNode:ValidCommunity
     ''')
 
-    visualize_query('''
+    _result = get_result_graph('''
     MATCH p=(c:Customer&ValidCommunity)-->(:(Phone|EmailAddress|Identifier)&!Outlier)<--(c2)
     RETURN p
     LIMIT 500;
     ''')
+    _widget = NvlWidget.from_result(_result)
+
+    _widget
     return
 
 
@@ -240,10 +238,12 @@ def _(mo):
 
 @app.cell
 def _():
+    drop_graph('similarity-projection')
+
     run_query("""
-    CALL gds.graph.project('similarity-projection', 
-        { 
-            ValidCommunity: {properties: 'wccId'} 
+    CALL gds.graph.project('similarity-projection',
+        {
+            ValidCommunity: {properties: 'wccId'}
         },
         {
             ASSOC_ID: { properties: 'weight' },
@@ -278,18 +278,24 @@ def _(mo):
 
 @app.cell
 def _():
-    visualize_query('MATCH p=()-[r:SHARED_PII]->() RETURN p LIMIT 100;')
+    _result = get_result_graph('MATCH p=()-[r:SHARED_PII]->() RETURN p LIMIT 100;')
+    _widget = NvlWidget.from_result(_result)
+
+    _widget
     return
 
 
 @app.cell
 def _():
-    visualize_query('''
+    _result = get_result_graph('''
     MATCH p=(c:Customer)-[r:SHARED_PII WHERE r.featureScore > 0.8]->(c2)
     WITH c, collect(p) as paths
     WHERE size(paths) <= 5
     RETURN paths\nLIMIT 50;
     ''')
+    _widget = NvlWidget.from_result(_result)
+
+    _widget
     return
 
 
@@ -340,12 +346,15 @@ def _(mo):
 
 @app.cell
 def _():
-    visualize_query('''
+    _result = get_result_graph('''
     MATCH p=(c:Customer&!ValidCommunity)
     MATCH p2=ALL SHORTEST (c)-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]->(:!Outlier)
     RETURN *
     LIMIT 100;
     ''')
+    _widget = NvlWidget.from_result(_result)
+
+    _widget
     return
 
 
@@ -361,11 +370,14 @@ def _(mo):
 
 @app.cell
 def _():
-    visualize_query('''
+    _result = get_result_graph('''
     MATCH p=(c:Customer)-[r:SHARED_PII WHERE r.combinedScore > 0.8]->(c2)
     MATCH p2=ALL SHORTEST (c)-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]->(:!Outlier)<-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]-(c2)
     RETURN *;
     ''')
+    _widget = NvlWidget.from_result(_result)
+
+    _widget
     return
 
 
@@ -381,10 +393,10 @@ def _(mo):
 
 @app.cell
 def _():
-    visualize_query('''
+    _result = get_result_graph('''
     MATCH p=(c:Customer)-[r:SHARED_PII WHERE r.combinedScore <= 0.8]->(c2)
-    WITH c.wccId as wccId, count(r) as numRels, 
-        sum(r.lastNameScore) as lastNameTotal, 
+    WITH c.wccId as wccId, count(r) as numRels,
+        sum(r.lastNameScore) as lastNameTotal,
         collect({p:p,c:c,c2:c2}) as resultList
     WHERE (lastNameTotal / numRels) >= 0.8
     WITH *
@@ -393,33 +405,43 @@ def _():
     MATCH p2=ALL SHORTEST (c)-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]->(:!Outlier)<-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]-(c2)
     RETURN *;
     ''')
+    _widget = NvlWidget.from_result(_result)
+
+    _widget
     return
 
 
 @app.cell
 def _():
-    visualize_query('''
+    _result = get_result_graph('''
     MATCH p=(c:Customer)-[r:SHARED_PII]->(c2)
     MATCH p2=ALL SHORTEST (c)-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]->(:!Outlier)<-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]-(c2)
     RETURN *
     LIMIT 500;
     ''')
+    _widget = NvlWidget.from_result(_result)
+
+    _widget
     return
 
 
 @app.cell
 def _():
-    visualize_query('''
+    _result = get_result_graph('''
     MATCH (o:Outlier)<-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]-(c:Customer)
     MATCH p2=ALL SHORTEST (c)-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]->()
     RETURN *;
     ''')
+    _widget = NvlWidget.from_result(_result)
+
+    _widget
     return
 
 
 @app.cell
 def _():
     import marimo as mo
+
     return (mo,)
 
 

@@ -1,18 +1,22 @@
 import marimo
 
-__generated_with = "0.19.7"
+__generated_with = "0.19.9"
 app = marimo.App()
 
 with app.setup:
     # Initialization code that runs before all other cells
 
-    from util import run_query, visualize_query
+    from util import run_query, visualize_query, run_query_df, get_result_graph, project_graph, visualize_projection, wcc, drop_graph
+
+    from NvlWidget import NvlWidget
 
 
 @app.cell
 def _():
-    _query = 'MATCH p=()-[]-() limit 10 RETURN p'
-    visualize_query(_query)
+    _result = get_result_graph('MATCH p=()-[]-() limit 10 RETURN p')
+    _widget = NvlWidget.from_result(_result)
+
+    _widget
     return
 
 
@@ -39,13 +43,16 @@ def _(mo):
 @app.cell
 def _():
     import marimo as mo
+
     return (mo,)
 
 
 @app.cell
 def _():
-    _query = 'call db.schema.visualization()'
-    visualize_query(_query)
+    _result = get_result_graph('call db.schema.visualization')
+    _widget = NvlWidget.from_result(_result)
+
+    _widget
     return
 
 
@@ -59,23 +66,23 @@ def _(mo):
 
 @app.cell
 def _():
-    _query = '\nMATCH (:Customer)-[r:PURCHASED]->(:Product)\nREMOVE r.totalPurchased\n'
+    _query = 'MATCH (:Customer)-[r:PURCHASED]->(:Product) REMOVE r.totalPurchased'
     results = run_query(_query)
-    _query = '\nMATCH (:Customer)-[r:SIMILAR_PURCHASE_TO]->()\nDELETE r\n'
+    _query = 'MATCH (:Customer)-[r:SIMILAR_PURCHASE_TO]->() DELETE r'
     results = run_query(_query)
-    _query = '\nMATCH (c:Customer)\nREMOVE c.segmentId, c.embedding\n'
+    _query = 'MATCH (c:Customer) REMOVE c.segmentId, c.embedding'
     results = run_query(_query)
-    _query = "\nCALL gds.graph.drop('embedding-projection')\n"
+    _query = "CALL gds.graph.drop('embedding-projection')"
     try:
         results = run_query(_query)
     except Exception:
         print('Ignoring error - projection does not exist')
-    _query = "\nCALL gds.graph.drop('cf-projection')\n"
+    _query = "CALL gds.graph.drop('cf-projection')"
     try:
         results = run_query(_query)
     except Exception:
         print('Ignoring error - projection does not exist')
-    _query = "\nCALL gds.graph.drop('co-purchase')\n"
+    _query = "CALL gds.graph.drop('co-purchase')"
     try:
         results = run_query(_query)
     except Exception:
@@ -95,7 +102,7 @@ def _(mo):
 
 @app.cell
 def _():
-    _query = '\nMATCH (c:Customer)-[:ORDERED]->(:Order)-[:LINE_ITEM]->(li:OrderLineItem)-[:PRODUCT]->(p:Product)\nWITH c, p, sum(li.quantity) as totalPurchased\nMATCH (c)-[r:PURCHASED]->(p)\nSET r.totalPurchased = totalPurchased;\n'
+    _query = 'MATCH (c:Customer)-[:ORDERED]->(:Order)-[:LINE_ITEM]->(li:OrderLineItem)-[:PRODUCT]->(p:Product) WITH c, p, sum(li.quantity) as totalPurchased MATCH (c)-[r:PURCHASED]->(p) SET r.totalPurchased = totalPurchased;'
     run_query(_query)
     return
 
@@ -188,8 +195,28 @@ def _(mo):
 
 @app.cell
 def _():
-    _query = '\nWITH {\n    communityMinSize: 10,\n    communityMaxSize: 40\n} as params\nMATCH (c:Customer) WHERE c.segmentId IS NOT NULL\nWITH params, c.segmentId AS segmentId, count(c) AS numberOfCustomers \nWHERE params.communityMinSize <= numberOfCustomers <= params.communityMaxSize\nLIMIT 1\nMATCH p=(c:Customer {segmentId: segmentId})-[:SIMILAR_PURCHASE_TO]->(c2 {segmentId: segmentId})\nWITH *\nCALL (c, c2) {\n  MATCH p2=(c:Customer)-[:PURCHASED]->()<-[:PURCHASED]-(c2)\n  RETURN p2\n  LIMIT 20\n}\nRETURN p, p2\n'
-    visualize_query(_query)
+    _result = get_result_graph('''
+    WITH {
+    communityMinSize: 10,
+    communityMaxSize: 40
+    } as params
+    MATCH (c:Customer) WHERE c.segmentId IS NOT NULL
+    WITH params, c.segmentId AS segmentId, count(c) AS numberOfCustomers 
+    WHERE params.communityMinSize <= numberOfCustomers <= params.communityMaxSize
+    LIMIT 1
+    MATCH p=(c:Customer {segmentId: segmentId})-[:SIMILAR_PURCHASE_TO]->(c2 {segmentId: segmentId})
+    WITH *
+    CALL (c, c2) {
+    MATCH p2=(c:Customer)-[:PURCHASED]->()<-[:PURCHASED]-(c2)
+    RETURN p2
+    LIMIT 20
+    }
+    RETURN p, p2
+    ''')
+
+    _widget = NvlWidget.from_result(_result)
+    _widget
+
     return
 
 
