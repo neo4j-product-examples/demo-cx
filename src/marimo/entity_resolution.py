@@ -1,20 +1,17 @@
 import marimo
 
-__generated_with = "0.19.9"
+__generated_with = "0.20.4"
 app = marimo.App(width="full")
 
 with app.setup:
     from util import run_query, visualize_query, run_query_df, get_result_graph, project_graph, visualize_projection, wcc, drop_graph
 
-    from NvlWidget import NvlWidget
 
 
 @app.cell
 def _():
-    _result = get_result_graph('MATCH p=()-[]-() limit 10 RETURN p')
-    _widget = NvlWidget.from_result(_result)
-
-    _widget
+    _result = visualize_query('MATCH p=()-[]-() limit 10 RETURN p')
+    _result
     return
 
 
@@ -41,10 +38,8 @@ def _(mo):
 
 @app.cell
 def _():
-    _result = get_result_graph('call db.schema.visualization()')
-    _widget = NvlWidget.from_result(_result)
-
-    _widget
+    _result = visualize_query('call db.schema.visualization()')
+    _result
     return
 
 
@@ -141,10 +136,9 @@ def _():
     SET n:Outlier;
     ''')
 
-    _result = get_result_graph('match (o:Outlier)-[r]-(c) return *')
-    _widget = NvlWidget.from_result(_result)
+    _result = visualize_query('match (o:Outlier)-[r]-(c) return *')
 
-    _widget
+    _result
     return
 
 
@@ -184,14 +178,12 @@ def _():
     SET communityNode:ValidCommunity
     ''')
 
-    _result = get_result_graph('''
+    _result = visualize_query('''
     MATCH p=(c:Customer&ValidCommunity)-->(:(Phone|EmailAddress|Identifier)&!Outlier)<--(c2)
     RETURN p
     LIMIT 500;
     ''')
-    _widget = NvlWidget.from_result(_result)
-
-    _widget
+    _result
     return
 
 
@@ -278,24 +270,20 @@ def _(mo):
 
 @app.cell
 def _():
-    _result = get_result_graph('MATCH p=()-[r:SHARED_PII]->() RETURN p LIMIT 100;')
-    _widget = NvlWidget.from_result(_result)
-
-    _widget
+    _result = visualize_query('MATCH p=()-[r:SHARED_PII]->() RETURN p LIMIT 100;')
+    _result
     return
 
 
 @app.cell
 def _():
-    _result = get_result_graph('''
+    _result = visualize_query('''
     MATCH p=(c:Customer)-[r:SHARED_PII WHERE r.featureScore > 0.8]->(c2)
     WITH c, collect(p) as paths
     WHERE size(paths) <= 5
     RETURN paths\nLIMIT 50;
     ''')
-    _widget = NvlWidget.from_result(_result)
-
-    _widget
+    _result
     return
 
 
@@ -346,15 +334,13 @@ def _(mo):
 
 @app.cell
 def _():
-    _result = get_result_graph('''
+    _result = visualize_query('''
     MATCH p=(c:Customer&!ValidCommunity)
     MATCH p2=ALL SHORTEST (c)-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]->(:!Outlier)
     RETURN *
     LIMIT 100;
     ''')
-    _widget = NvlWidget.from_result(_result)
-
-    _widget
+    _result
     return
 
 
@@ -370,14 +356,12 @@ def _(mo):
 
 @app.cell
 def _():
-    _result = get_result_graph('''
+    _result = visualize_query('''
     MATCH p=(c:Customer)-[r:SHARED_PII WHERE r.combinedScore > 0.8]->(c2)
     MATCH p2=ALL SHORTEST (c)-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]->(:!Outlier)<-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]-(c2)
     RETURN *;
     ''')
-    _widget = NvlWidget.from_result(_result)
-
-    _widget
+    _result
     return
 
 
@@ -393,7 +377,7 @@ def _(mo):
 
 @app.cell
 def _():
-    _result = get_result_graph('''
+    _result = visualize_query('''
     MATCH p=(c:Customer)-[r:SHARED_PII WHERE r.combinedScore <= 0.8]->(c2)
     WITH c.wccId as wccId, count(r) as numRels,
         sum(r.lastNameScore) as lastNameTotal,
@@ -405,36 +389,30 @@ def _():
     MATCH p2=ALL SHORTEST (c)-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]->(:!Outlier)<-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]-(c2)
     RETURN *;
     ''')
-    _widget = NvlWidget.from_result(_result)
-
-    _widget
+    _result
     return
 
 
 @app.cell
 def _():
-    _result = get_result_graph('''
+    _result = visualize_query('''
     MATCH p=(c:Customer)-[r:SHARED_PII]->(c2)
     MATCH p2=ALL SHORTEST (c)-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]->(:!Outlier)<-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]-(c2)
     RETURN *
     LIMIT 500;
     ''')
-    _widget = NvlWidget.from_result(_result)
-
-    _widget
+    _result
     return
 
 
 @app.cell
 def _():
-    _result = get_result_graph('''
+    _result = visualize_query('''
     MATCH (o:Outlier)<-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]-(c:Customer)
     MATCH p2=ALL SHORTEST (c)-[:ASSOC_EMAIL|ASSOC_PHONE|ASSOC_ID]->()
     RETURN *;
     ''')
-    _widget = NvlWidget.from_result(_result)
-
-    _widget
+    _result
     return
 
 

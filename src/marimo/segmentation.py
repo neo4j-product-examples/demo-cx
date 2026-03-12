@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.19.9"
+__generated_with = "0.20.4"
 app = marimo.App()
 
 with app.setup:
@@ -8,15 +8,12 @@ with app.setup:
 
     from util import run_query, visualize_query, run_query_df, get_result_graph, project_graph, visualize_projection, wcc, drop_graph
 
-    from NvlWidget import NvlWidget
 
 
 @app.cell
 def _():
-    _result = get_result_graph('MATCH p=()-[]-() limit 10 RETURN p')
-    _widget = NvlWidget.from_result(_result)
-
-    _widget
+    _result = visualize_query('MATCH p=()-[]-() limit 10 RETURN p')
+    _result
     return
 
 
@@ -49,10 +46,8 @@ def _():
 
 @app.cell
 def _():
-    _result = get_result_graph('call db.schema.visualization')
-    _widget = NvlWidget.from_result(_result)
-
-    _widget
+    _result = visualize_query('call db.schema.visualization')
+    _result
     return
 
 
@@ -195,7 +190,7 @@ def _(mo):
 
 @app.cell
 def _():
-    _result = get_result_graph('''
+    _result = visualize_query('''
     WITH {
     communityMinSize: 10,
     communityMaxSize: 40
@@ -214,9 +209,7 @@ def _():
     RETURN p, p2
     ''')
 
-    _widget = NvlWidget.from_result(_result)
-    _widget
-
+    _result
     return
 
 

@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.19.9"
+__generated_with = "0.20.4"
 app = marimo.App(width="medium")
 
 with app.setup:
@@ -42,6 +42,7 @@ def project_graph(_name, _nodes, _rels):
 def drop_graph(_name):
    gds.graph.drop(_name)
 
+
 @app.function
 def run_query(_query, parameters=None):
     with driver.session() as session:
@@ -58,7 +59,7 @@ def visualize_query(_query, parameters=None):
         result = session.run(_query, parameters)
         VG = from_neo4j(result)
         VG.color_nodes(field="caption")
-        return marimo.iframe(VG.render().data)
+        return VG.render_widget()
 
 
 @app.function
